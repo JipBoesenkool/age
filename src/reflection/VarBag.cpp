@@ -13,9 +13,19 @@ Var* VarBag::Get( std::string name )
 	return nullptr;
 };
 
-void VarBag::Set( std::string name, Var data )
+void VarBag::Set( std::string name, Var& data )
 {
-	mProperties.insert( std::pair<std::string, Var>( name, data ) );
-	std::cout << mProperties[name].GetType()->mName << "\n";
+	auto pair = std::pair<std::string, Var>( name, data );
+	mProperties.insert( pair );
+};
+
+size_t VarBag::Size()
+{
+	return mProperties.size();
+}
+
+std::map<std::string, Var>* VarBag::GetMap()
+{
+	return &mProperties;
 };
 

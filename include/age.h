@@ -1,8 +1,8 @@
 #ifndef AGE_H
 #define AGE_H
 
-#include "pattern/message/SimpleExample/Message.h"
-#include "pattern/message/SimpleExample/MessageBus.h"
+#include "pattern/message/Message.h"
+#include "pattern/message/MessageBus.h"
 
 class Age
 {
@@ -13,8 +13,7 @@ public:
 		return instance;
 	}
 
-	static void hello();
-	//static void VarTest();
+	static void EngineApiTest();
 
 	MessageBus* GetMessageBus();
 

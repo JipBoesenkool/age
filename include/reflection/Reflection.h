@@ -5,9 +5,12 @@
 #ifndef AGE_REFLECTION_H
 #define AGE_REFLECTION_H
 
+//TODO: support templated classes
+
 #include "../../src/reflection/TypeDatabase.h"
 #include "TypeDesc.h"
 #include "Var.h"
+#include "VarBag.h"
 
 #define DefineType(type) \
 	template <> struct GetTypeName<type> { static const char* value; }; \
@@ -27,6 +30,5 @@
 
 #define AddField(Name, Func) \
 	.AddMember( #Name, Func )
-
 
 #endif //AGE_REFLECTION_H

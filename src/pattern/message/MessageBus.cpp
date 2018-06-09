@@ -4,7 +4,7 @@
 //Debugging
 #include <iostream>
 
-#include "pattern/message/SimpleExample/MessageBus.h"
+#include "pattern/message/MessageBus.h"
 MessageBus::MessageBus()
 {
 	//Empty constructor

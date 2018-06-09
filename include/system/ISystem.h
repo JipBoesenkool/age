@@ -5,7 +5,7 @@
 #ifndef AGE_ISYSTEM_H
 #define AGE_ISYSTEM_H
 
-#include "pattern/message/SimpleExample/Message.h"
+#include "pattern/message/Message.h"
 #include "pattern/pubsub/ISubscriber.h"
 
 class ISystem : public ISubscriber<IMessagePtr>

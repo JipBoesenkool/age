@@ -5,7 +5,7 @@
 #define AGE_MESSAGE_H
 
 #include <string>
-#include "../../../reflection/Var.h"
+#include "reflection/Var.h"
 
 //---------------------------------------------------------------------------------------------------------------------
 // Forward declaration & typedefs

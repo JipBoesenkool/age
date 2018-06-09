@@ -22,3 +22,6 @@ install(TARGETS age DESTINATION /usr/lib)
 #        LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
 #        RUNTIME  DESTINATION ${CMAKE_INSTALL_BINDIR})  # This is for Windows
 #install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+
+#engine playground
+add_subdirectory( demo )

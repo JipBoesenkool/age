@@ -7,7 +7,7 @@
 
 #include "Message.h"
 #include "system/ISystem.h"
-#include "../../pubsub/Channel.h"
+#include "pattern/pubsub/Channel.h"
 
 #include <queue>
 #include <map>
