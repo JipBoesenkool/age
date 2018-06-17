@@ -5,6 +5,10 @@
 #ifndef AGE_MESH_H
 #define AGE_MESH_H
 
+#include <renderer/renderer/buffer/VertexBufferLayout.h>
+#include <renderer/renderer/buffer/VertexBuffer.h>
+#include <renderer/renderer/buffer/IndexBuffer.h>
+
 typedef unsigned int MeshHandle;
 
 struct MeshResource

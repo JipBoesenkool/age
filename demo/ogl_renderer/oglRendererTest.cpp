@@ -1,6 +1,9 @@
 //
 // Created by Jip Boesenkool on 10/06/2018.
 //
+#include <glad/glad.h>
+#include <renderer/ogl_renderer/GLUtilities.h>
+
 #include <renderer/ogl_renderer/GLRenderer.h>
 #include <glfw/GLFWindow.h>
 #include <pattern/event/EventManager.h>

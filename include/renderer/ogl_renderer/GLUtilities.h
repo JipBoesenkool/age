@@ -9,6 +9,7 @@
 #include <string>
 #include <iostream>
 
+#define NDEBUG true
 #ifdef NDEBUG
 	class GLUtils
 	{

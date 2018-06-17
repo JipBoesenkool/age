@@ -127,7 +127,6 @@ void GLRenderer::Test()
 
 void GLRenderer::Clear() {
 	// Clear the colorbuffer
-	GLCall( glClearColor(0.2f, 0.3f, 0.3f, 1.0f) );
 	GLCall( glClear(GL_COLOR_BUFFER_BIT) );
 }
 

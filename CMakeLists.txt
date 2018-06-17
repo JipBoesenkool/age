@@ -4,10 +4,16 @@ project(age)
 set(CMAKE_CXX_STANDARD 14)
 # Must use GNUInstallDirs to install libraries into correct
 # locations on all platforms.
+add_definitions(-DBUILD_SHARED_LIBS=ON)
 include(GNUInstallDirs)
 ################################################################################
 # Libraries
 ################################################################################
+#GLAD
+set ( GLAD_SOURCE lib/GLAD2 )
+include_directories(${GLAD_SOURCE}/include)
+add_subdirectory(${GLAD_SOURCE})
+
 #glfw library
 set(GLFW_BUILD_EXAMPLES OFF CACHE STRING "" FORCE)
 set(GLFW_BUILD_TESTS    OFF CACHE STRING "" FORCE)
@@ -16,10 +22,8 @@ set(GLFW_SOURCE_DIR "${PROJECT_SOURCE_DIR}/lib/glfw")
 include_directories(${GLFW_SOURCE_DIR}/include)
 add_subdirectory(${GLFW_SOURCE_DIR})
 
-#GLAD
-set(GLAD_LIB_SOURCE_DIR "${PROJECT_SOURCE_DIR}/lib/glad")
-include_directories(${GLAD_INCLUDE_DIR})
-add_subdirectory(${GLAD_LIB_SOURCE_DIR})
+
+#add_library(glad SHARED ${GLAD})
 
 #libraries to link
 set(LINKED_LIBRARIES
