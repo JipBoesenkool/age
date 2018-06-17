@@ -7,6 +7,27 @@
 typedef int64_t intptr;
 typedef uint64_t uintptr;
 
+void* operator new(size_t size)
+{
+	return malloc(size, sizeof(char));
+};
+
+void operator delete(void* mem)
+{
+	free(mem);
+};
+
+// Don’t forget the array version of new/delete
+void* operator new[](size_t size)
+{
+	return malloc(size, sizeof(char));
+};
+
+void operator delete[](void* mem)
+{
+	free(mem);
+};
+
 #ifdef DEBUG
 #define assertCheck assert
 #else
