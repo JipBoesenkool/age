@@ -10,7 +10,10 @@ set ( OGL_RENDERER_LIB libGLRenderer.dylib )
 link_directories( ../build/src/renderer/ogl_renderer )
 
 set(SOURCE_FILES
-        main.cpp)
+        main.cpp
+        ecs/ecsTest.cpp
+        ogl_renderer/oglRendererTest.cpp
+        reflection/reflectionTest.cpp)
 
 add_executable(ageDemo ${SOURCE_FILES})
 target_link_libraries(ageDemo ${AGE_LIB} )

@@ -85,46 +85,6 @@ MeshHandle GLRenderer::CreateMesh(const std::string& name, VertexBufferLayout& l
 	return index;
 }
 
-/*
-void GLRenderer::InitTest()
-{
-	// Build and compile our shader program
-	shader = new GLShader("resources/shaders/glsl/basic.glsl");
-
-	// Set up vertex data (and buffer(s)) and attribute pointers
-	GLfloat vertices[] = {
-			//positions
-			-0.5f, -0.5f,
-			0.5f, -0.5f,
-			0.5f, 0.5f,
-			-0.5f, 0.5f
-	};
-
-	unsigned int indices[] = {
-			0, 1, 2,
-			2, 3, 0
-	};
-
-	va = new GLVertexArray();
-	VertexBufferLayout vbl;
-	vbl.Push("float", 2);
-	vb = new GLVertexBuffer( vertices, 4 * 2 * sizeof( float ) );
-	va->AddBuffer(*vb, vbl);
-	ib = new GLIndexBuffer(indices, 6);
-}
-
-void GLRenderer::Test()
-{
-	// Draw our first triangle
-	//shader->Bind();
-	//shader->SetUniformVec4( "uColor", 0.2f, 0.3f, 0.8f, 1.0f );
-	//va->Bind();
-	//GLCall( glDrawElements(GL_TRIANGLES, ib->GetCount(), GL_UNSIGNED_INT, 0) );
-	//va->Unbind();
-	mesh->Render( *shader );
-}
- */
-
 void GLRenderer::Clear() {
 	// Clear the colorbuffer
 	GLCall( glClear(GL_COLOR_BUFFER_BIT) );
