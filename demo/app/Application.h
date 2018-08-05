@@ -11,6 +11,7 @@
 #include <renderer/ogl_renderer/GLRenderer.h>
 #include <glfw/GLFWindow.h>
 #include <pattern/event/EventManager.h>
+#include <os/Platform.h>
 #include <ecs/Ecs.h>
 
 struct MeshComponent : public ecs::Component<MeshComponent>
@@ -28,6 +29,7 @@ class Application
 {
 //Members
 private:
+	Platform* pPlatform;
 	EventManager* pEvtMgr;
 	GLFWindow* pWindow;
 	GLRenderer* pGLRenderer;

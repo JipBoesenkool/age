@@ -17,7 +17,9 @@ void RunTests()
 
 int main() {
 	std::cout << "Age demo started." << "\n";
+#ifdef NDEBUG
 	Log("Debug mode.")
+#endif
 
 	//RunTests();
 

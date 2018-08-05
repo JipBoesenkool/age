@@ -9,6 +9,7 @@
 void Application::Init()
 {
 	//Init engine systems
+	pPlatform   = new Platform();
 	pEvtMgr 	= new EventManager(true);
 	pWindow 	= new GLFWindow(800, 600, (char *)"Test App");
 	pGLRenderer	= new GLRenderer();
@@ -51,6 +52,7 @@ void Application::Run()
 
 		//RenderQuad
 		{
+			std::cout << pPlatform->Time.GetElapsedTimeInMilliSec() << "ms" << std::endl;
 			pGLRenderer->Render( meshComp.mShaderHandle, meshComp.mMeshHandle, &uniforms );
 		}
 

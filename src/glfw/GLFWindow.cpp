@@ -11,7 +11,7 @@ GLFWindow::GLFWindow( )
 {
 	mWidth	= 1080;
 	mHeight	= 1920;
-	mTitle	= "NULL";
+	mTitle	= (char*)"NULL";
 }
 
 GLFWindow::GLFWindow( int width, int height, char* title )
