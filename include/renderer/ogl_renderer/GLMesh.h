@@ -29,8 +29,7 @@ public:
 	GLMesh(GLMesh&& other); //Move constructor
 	GLMesh& operator=(GLMesh&& other); //Move assignment
 
-	//TODO: refactor to const
-	void Render(Shader& shader);
+	void Render();
 };
 
 #endif //AGE_GLMESH_H

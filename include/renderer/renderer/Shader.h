@@ -39,10 +39,14 @@ protected:
 	std::string mName;
 	std::unordered_map<std::string, int> mUniformCache;
 public:
+	Shader(){
+		//Empty contructor
+	};
 	virtual void Bind() const = 0;
 	virtual void Unbind() const = 0;
 
 	//Uniform functions
+	virtual int GetUniformLocation(const std::string& uniformName) = 0;
 	virtual void SetUniformBool(const std::string &name, bool value) = 0;
 	virtual void SetUniformInt(const std::string &name, int value) = 0;
 	virtual void SetUniformFloat(const std::string &name, float value) = 0;

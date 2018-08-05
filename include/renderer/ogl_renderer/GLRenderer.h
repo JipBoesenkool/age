@@ -5,6 +5,8 @@
 #ifndef AGE_GLRENDERER_H
 #define AGE_GLRENDERER_H
 
+#include <renderer/renderer/Renderer.h>
+
 #include "GLUtilities.h"
 
 //buffer
@@ -16,6 +18,7 @@
 //Misc
 #include "GLShader.h"
 #include "GLMesh.h"
+#include "GLUniform.h"
 
 #include <unordered_map>
 
@@ -29,6 +32,12 @@ private:
 	std::vector<GLMesh> mMeshes;
 	std::unordered_map<std::string, unsigned int> mShaderMap;
 	std::vector<GLShader> mShaders;
+//Getters
+public:
+	MeshHandle GetMeshHandle( std::string name ){ return mMeshMap[name]; }
+	ShaderHandle GetShaderHandle( std::string name ){ return mShaderMap[name]; }
+	Shader& GetShader( ShaderHandle shaderId ){ return mShaders[ shaderId ]; }
+	Shader& GetShader( std::string name ){ return mShaders[ mShaderMap[name] ]; }
 //Functions
 public:
 	GLRenderer();
@@ -38,25 +47,10 @@ public:
 	MeshHandle CreateMesh(const std::string& name, VertexBufferLayout& layout, const VertexBufferObject& vbo, const IndexBufferObject& ibo);
 
 	void Clear();
-	void Render( ShaderHandle shader, MeshHandle mesh );
+	void Render( ShaderHandle shader, MeshHandle mesh, UniformList* uniformList );
 private:
+	void SetUniforms( UniformList* uniformList, Shader& shader);
 	void PrintVersions();
-	GLShader* shader;
-	GLMesh* mesh;
-
-//Test
-	/*
-public:
-	void InitTest();
-	void Test();
-private:
-	GLShader* shader;
-	GLVertexBuffer* vb;
-	GLVertexArray* va;
-	GLIndexBuffer* ib;
-	GLMesh* mesh;
-	 */
 };
-
 
 #endif //AGE_GLRENDERER_H

@@ -38,12 +38,8 @@ GLMesh& GLMesh::operator=(GLMesh&& other)
 	return *this;
 }
 
-void GLMesh::Render(Shader& shader)
+void GLMesh::Render()
 {
-	shader.Bind();
-	shader.SetUniformVec4( "uColor", 0.2f, 0.3f, 0.8f, 1.0f );
-
-	//TODO: set uniforms
 	mVao.Bind();
 	GLCall( glDrawElements(GL_TRIANGLES, mIbo.GetCount(), GL_UNSIGNED_INT, 0) );
 	mVao.Unbind();

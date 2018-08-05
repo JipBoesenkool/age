@@ -1,24 +1,14 @@
 //
 // Created by Jip Boesenkool on 10/06/2018.
 //
-#include <glad/glad.h>
-#include <renderer/ogl_renderer/GLUtilities.h>
+#include <glm/vec4.hpp>
+#include <glm/vec3.hpp>
+#include "oglRendererTest.h"
 
-#include <renderer/ogl_renderer/GLRenderer.h>
-#include <glfw/GLFWindow.h>
-#include <pattern/event/EventManager.h>
-
-EventManager* pEvtMgr;
-GLFWindow* pWindow;
-GLRenderer* pGLRenderer;
-
-ShaderHandle shaderId;
-MeshHandle meshId;
-
-void InitScene()
+void oglRendererTest::InitQuad()
 {
 	// Build and compile our shader program
-	shaderId = pGLRenderer->CreateShader("basic", "../../resources/shaders/glsl/basic.glsl");
+	quad.mShaderHandle = pGLRenderer->CreateShader("basic", "../../resources/shaders/glsl/basic.glsl");
 
 	//Create mesh object
 	// Set up vertex data (and buffer(s)) and attribute pointers
@@ -40,16 +30,24 @@ void InitScene()
 	VertexBufferObject vbo{vertices, 4 * 2 * sizeof( float )};
 	IndexBufferObject ibo{indices, 6};
 
-	meshId = pGLRenderer->CreateMesh("quad", vbl, vbo, ibo);
+	quad.mQuadHandle = pGLRenderer->CreateMesh("quad", vbl, vbo, ibo);
+
+	quad.mUniformList.Push( "uColor", new glm::vec4(1.0f,0.0f,0.0f,1.0f) );
+	quad.mUniformList.Push( "uPosition", new glm::vec3(1.0f,1.0f,1.0f) );
 }
 
-void OGLTest()
+void oglRendererTest::RenderQuad()
+{
+	pGLRenderer->Render(quad.mShaderHandle, quad.mQuadHandle, &quad.mUniformList);
+}
+
+void oglRendererTest::OGLTest()
 {
 	pEvtMgr 	= new EventManager(true);
-	pWindow 	= new GLFWindow(800, 600, "OpenGL Test");
+	pWindow 	= new GLFWindow(800, 600, (char *)"OpenGL Test");
 	pGLRenderer	= new GLRenderer();
 
-	InitScene();
+	InitQuad();
 
 	{
 		while( !pWindow->IsClosed()) {
@@ -58,7 +56,7 @@ void OGLTest()
 
 			//Render
 			pGLRenderer->Clear();
-			pGLRenderer->Render(shaderId, meshId);
+			RenderQuad();
 
 			pWindow->SwapBuffers();
 		}

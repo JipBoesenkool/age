@@ -31,6 +31,7 @@ GLRenderer::GLRenderer()
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	gBufferLayoutImpl = new GLVertexBufferLayoutImpl();
+	//UniformList::sUniformImpl = new GLUniform();
 
 	//PrintVersions();
 	//SetupOpenglSettings();
@@ -90,14 +91,32 @@ void GLRenderer::Clear() {
 	GLCall( glClear(GL_COLOR_BUFFER_BIT) );
 }
 
-void GLRenderer::Render( ShaderHandle shader, MeshHandle mesh )
+void GLRenderer::Render( ShaderHandle shaderHandle, MeshHandle meshHandle, UniformList* uniformList = nullptr )
 {
-	GLMesh& m = mMeshes[ mesh ];
-	GLShader& s = mShaders[shader];
-	m.Render(s);
+	GLMesh& mesh = mMeshes[ meshHandle ];
+
+	GLShader& shader = mShaders[ shaderHandle ];
+	shader.Bind();
+
+	if( uniformList != nullptr )
+	{
+		SetUniforms( uniformList, shader );
+	}
+
+	mesh.Render();
 }
 
 //private
+void GLRenderer::SetUniforms( UniformList* uniformList, Shader& shader )
+{
+	std::vector<Uniform>& uniforms = uniformList->GetUniforms();
+	for(int i = 0; i < uniforms.size(); i++)
+	{
+		Uniform& uniform = uniforms[i];
+		uniform.mpSetFn( shader, uniform.mName, uniform.mpData );
+	}
+}
+
 void GLRenderer::PrintVersions()
 {
 	// Get info of GPU and supported OpenGL version

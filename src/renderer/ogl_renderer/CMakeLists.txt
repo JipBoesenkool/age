@@ -10,6 +10,8 @@ project(NAME)
 # Look up OpenGL
 find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIR})
+
+
 #GLAD
 set ( GLAD libglad.dylib )
 link_directories( ../../../lib/glad/build )
@@ -30,7 +32,8 @@ set(RENDERER_SOURCE_FILES
         buffer/GLIndexBuffer.cpp
         buffer/GLVertexArray.cpp
         GLShader.cpp
-        GLMesh.cpp)
+        GLMesh.cpp
+        GLUniform.cpp)
 add_library(${NAME} SHARED ${RENDERER_SOURCE_FILES})
 target_link_libraries(${NAME} age )
 target_link_libraries(${NAME} ${GLAD} )

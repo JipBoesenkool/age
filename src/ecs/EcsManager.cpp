@@ -6,6 +6,7 @@
 #include "memory/Memory.h"
 
 #include <algorithm>
+#include <iostream>
 
 namespace ecs
 {
@@ -32,7 +33,7 @@ namespace ecs
 	}
 
 	//Entity methods
-	EntityHandle EcsManager::CreateEntity( BaseComponent* pComponents, const uint32_t* pComponentTypes, size_t numComponents)
+	EntityHandle EcsManager::CreateEntity( BaseComponent** pComponents, const uint32_t* pComponentTypes, size_t numComponents)
 	{
 		Entity* newEntity = new Entity;
 		EntityHandle handle = (EntityHandle)newEntity;
@@ -43,7 +44,7 @@ namespace ecs
 				return NULL_ENTITY_HANDLE;
 			}
 
-			AddComponentInternal(handle, newEntity->mComponents, pComponentTypes[i], &pComponents[i]);
+			AddComponentInternal(handle, newEntity->mComponents, pComponentTypes[i], pComponents[i]);
 		}
 
 		newEntity->mVectorIndex = mEntities.size();
@@ -65,48 +66,38 @@ namespace ecs
 		mEntities.pop_back();
 	}
 
-	//System methods
-	void EcsManager::AddSystem(BaseSystem& system)
-	{
-		mSystems.push_back(&system);
-	}
-	void EcsManager::RemoveSystem(BaseSystem& system)
-	{
-		for(uint32_t i = 0; i < mSystems.size(); i++) {
-			if(&system == mSystems[i]) {
-				mSystems.erase(mSystems.begin() + i);
-			}
-		}
-	}
-	void EcsManager::UpdateSystems( float delta )
+
+	void EcsManager::UpdateSystems( ecs::SystemList& systems, float delta )
 	{
 		std::vector<BaseComponent*> componentParam;
 		std::vector<std::vector<uint8_t >*> componentArrays;
-		for(uint32_t i = 0; i < mSystems.size(); i++) {
-			const std::vector<uint32_t >& componentTypes = mSystems[i]->getComponentTypes();
+		for(uint32_t i = 0; i < systems.Size(); i++) {
+			const std::vector<uint32_t >& componentTypes = systems[i]->GetComponentTypes();
 			if(componentTypes.size() == 1) {
 				size_t typeSize = ComponentTypeStore::GetTypeSize( componentTypes[0] );
 				std::vector<uint8_t>& array = mComponents[ componentTypes[0] ];
 				for(uint32_t j = 0; j < array.size(); j += typeSize) {
 					BaseComponent* component = (BaseComponent*)&array[j];
-					mSystems[i]->UpdateComponents(delta, &component);
+					systems[i]->UpdateComponents(delta, &component);
 				}
 			} else {
-				UpdateSystemWithMultipleComponents(i, delta, componentTypes, componentParam, componentArrays);
+				UpdateSystemWithMultipleComponents(i, systems, delta, componentTypes, componentParam, componentArrays);
 			}
 		}
 	}
 
 //Private:
-	void EcsManager::UpdateSystemWithMultipleComponents( uint32_t index, float delta, const std::vector<uint32_t>& componentTypes, std::vector<BaseComponent*>& componentParam, std::vector<std::vector<uint8_t>*>& componentArrays)
+	void EcsManager::UpdateSystemWithMultipleComponents( uint32_t index, ecs::SystemList& systems, float delta, const std::vector<uint32_t>& componentTypes, std::vector<BaseComponent*>& componentParam, std::vector<std::vector<uint8_t>*>& componentArrays)
 	{
+		const std::vector< uint32_t >& componentFlags = systems[index]->GetComponentFlags();
+
 		componentParam.resize(std::max(componentParam.size(), componentTypes.size()));
 		componentArrays.resize(std::max(componentArrays.size(), componentTypes.size()));
 
 		for(uint32_t i = 0; i < componentTypes.size(); i++) {
 			componentArrays[i] = &mComponents[ componentTypes[i] ];
 		}
-		uint32_t minSizeIndex = FindLeastCommonComponent( componentTypes );
+		uint32_t minSizeIndex = FindLeastCommonComponent( componentTypes, componentFlags );
 
 		size_t typeSize = ComponentTypeStore::GetTypeSize( componentTypes[minSizeIndex] );
 		std::vector<uint8_t>& array = *componentArrays[minSizeIndex];
@@ -121,14 +112,14 @@ namespace ecs
 				}
 
 				componentParam[j] = GetComponentInternal(entityComponents, *componentArrays[j], componentTypes[j]);
-				if(componentParam[j] == nullptr) {
+				if(componentParam[j] == nullptr && (componentFlags[j] & BaseSystem::FLAG_OPTIONAL) == 0 ) {
 					isValid = false;
 					break;
 				}
 			}
 
 			if(isValid) {
-				mSystems[index]->UpdateComponents(delta, &componentParam[0]);
+				systems[index]->UpdateComponents(delta, &componentParam[0]);
 			}
 		}
 	}
@@ -199,8 +190,6 @@ namespace ecs
 		compTypeVector.resize(srcIndex);
 	}
 
-
-
 	//Utility functions
 	Entity* EcsManager::EntityHandleToRawType( EntityHandle handle )
 	{
@@ -217,17 +206,27 @@ namespace ecs
 		return EntityHandleToRawType(handle)->mVectorIndex;
 	}
 
-	uint32_t EcsManager::FindLeastCommonComponent(const std::vector<uint32_t>& componentTypes)
+	uint32_t EcsManager::FindLeastCommonComponent(const std::vector<uint32_t>& componentTypes, const std::vector<uint32_t>& componentFlags)
 	{
-		uint32_t minSize = mComponents[ componentTypes[0] ].size() / ComponentTypeStore::GetTypeSize( componentTypes[0] );
-		uint32_t minIndex = 0;
-		for(uint32_t i = 1; i < componentTypes.size(); i++) {
+		uint32_t minSize = (uint32_t)-1;
+		uint32_t minIndex = (uint32_t)-1;
+		for(uint32_t i = 0; i < componentTypes.size(); i++) {
+			if( (componentFlags[i] & BaseSystem::FLAG_OPTIONAL) != 0 )
+			{
+				continue;
+			}
+
 			size_t typeSize = ComponentTypeStore::GetTypeSize( componentTypes[i] );
 			uint32_t size = mComponents[ componentTypes[i] ].size()/typeSize;
-			if(size < minSize) {
+			if(size <= minSize) {
 				minSize = size;
 				minIndex = i;
 			}
+		}
+
+		if(minIndex == (uint32_t)-1)
+		{
+			std::cerr << "EcsManager::FindLeastCommonComponent: All component are optional. \n";
 		}
 		return minIndex;
 	}

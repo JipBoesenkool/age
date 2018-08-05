@@ -9,6 +9,11 @@ include(GNUInstallDirs)
 ################################################################################
 # Libraries
 ################################################################################
+#GLM
+set(GLM_LIB_SOURCE_DIR "${PROJECT_SOURCE_DIR}/lib/GLM")
+include_directories(${GLM_LIB_SOURCE_DIR})
+add_subdirectory(${GLM_LIB_SOURCE_DIR})
+
 #GLAD
 set ( GLAD_SOURCE lib/GLAD2 )
 include_directories(${GLAD_SOURCE}/include)

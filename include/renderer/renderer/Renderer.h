@@ -13,5 +13,6 @@
 
 //Misc
 #include "Shader.h"
+#include "Uniform.h"
 
 #endif //AGE_RENDERER_H

@@ -21,9 +21,9 @@ public:
 	void Unbind() const override;
 
 	//Uniform functions
+	int GetUniformLocation(const std::string& uniformName) override;
 	void SetUniformBool(const std::string &name, bool value) override;
 	void SetUniformInt(const std::string &name, int value) override;
-	void SetUniformFloat(const std::string &name, const void* value);
 	void SetUniformFloat(const std::string &name, float value) override;
 	//void SetUniformVec2(const std::string &name, const glm::vec2 &value) override;
 	void SetUniformVec2(const std::string &name, float x, float y) override;
@@ -35,7 +35,6 @@ public:
 	//void SetUniformMat3(const std::string &name, const glm::mat3 &mat) override;
 	//void SetUniformMat4(const std::string &name, const glm::mat4 &mat) override;
 private:
-	int GetUniformLocation(const std::string& uniformName);
 	static unsigned int CreateShader( const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath = nullptr );
 	static unsigned int CompileShader( unsigned int type, const std::string& source);
 	static std::string LoadShader( const std::string& filePath);

@@ -13,7 +13,8 @@ set(SOURCE_FILES
         main.cpp
         ecs/ecsTest.cpp
         ogl_renderer/oglRendererTest.cpp
-        reflection/reflectionTest.cpp)
+        reflection/reflectionTest.cpp
+        app/Application.cpp)
 
 add_executable(ageDemo ${SOURCE_FILES})
 target_link_libraries(ageDemo ${AGE_LIB} )

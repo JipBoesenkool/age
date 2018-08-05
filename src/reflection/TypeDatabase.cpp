@@ -15,15 +15,40 @@ DefineTypeInternal( float );
 DefineTypeInternal( double );
 DefineTypeInternal( VarBag );
 
+//GLM
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
+#include <glm/mat2x2.hpp>
+#include <glm/mat3x3.hpp>
+#include <glm/mat4x4.hpp>
+DefineTypeInternal( glm::vec2 );
+DefineTypeInternal( glm::vec3 );
+DefineTypeInternal( glm::vec4 );
+DefineTypeInternal( glm::mat2 );
+DefineTypeInternal( glm::mat3 );
+DefineTypeInternal( glm::mat4 );
+
 TypeDatabase::TypeDatabase()
 {
+	//c++
 	CreateType<std::string>();
 	CreateType<bool>();
 	CreateType<char>();
 	CreateType<int>();
 	CreateType<float>();
 	CreateType<double>();
+
+	//engine
 	CreateType<VarBag>();
+
+	//glm
+	CreateType<glm::vec2>();
+	CreateType<glm::vec3>();
+	CreateType<glm::vec4>();
+	CreateType<glm::mat2>();
+	CreateType<glm::mat3>();
+	CreateType<glm::mat4>();
 }
 
 TypeDatabase& TypeDatabase::Get(){

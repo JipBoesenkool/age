@@ -8,16 +8,17 @@
 #include "Component.h"
 #include "ComponentTypeStore.h"
 #include "Entity.h"
+#include "SystemList.h"
 #include "System.h"
 
 #include <map>
+#include <iostream>
 
 namespace ecs {
 	class EcsManager
 	{
 		//Members
 	private:
-		std::vector< BaseSystem * > mSystems;
 		std::map< uint32_t, std::vector< uint8_t > > mComponents;
 		std::vector< Entity* > mEntities;
 		//Functions
@@ -26,8 +27,10 @@ namespace ecs {
 		~EcsManager();
 
 		//Entity methods
-		EntityHandle CreateEntity( BaseComponent *pComponents, const uint32_t *pComponentTypes, size_t numComponents );
+		EntityHandle CreateEntity( BaseComponent** pComponents, const uint32_t *pComponentTypes, size_t numComponents );
 		void RemoveEntity( EntityHandle handle );
+		template <class... Component>
+		EntityHandle CreateEntityByComponents(Component... componentArgs);
 
 		//Component methods
 		template< class ComponentType > void AddComponent( EntityHandle entity, ComponentType *pComponent );
@@ -35,13 +38,12 @@ namespace ecs {
 		template< class ComponentType > ComponentType* GetCompontent( EntityHandle entity );
 
 		//System methods
-		void AddSystem( BaseSystem &system );
-		void RemoveSystem( BaseSystem &system );
-		void UpdateSystems( float delta );
+		void UpdateSystems( ecs::SystemList& systems, float delta );
 
 	private:
 		void UpdateSystemWithMultipleComponents(
-			uint32_t index, float delta, const std::vector<uint32_t>& componentTypes,
+			uint32_t index, ecs::SystemList& systems,
+			float delta, const std::vector<uint32_t>& componentTypes,
 			std::vector<BaseComponent*>& componentParam, std::vector<std::vector<uint8_t>*>& componentVectors);
 
 		//Internal functions
@@ -54,8 +56,23 @@ namespace ecs {
 		Entity* EntityHandleToRawType( EntityHandle handle );
 		std::vector< CompontentPair >& EntityHandleToComponents( EntityHandle handle );
 		uint32_t EntityHandleToEntityIndex( EntityHandle handle );
-		uint32_t FindLeastCommonComponent(const std::vector<uint32_t>& componentTypes);
+		uint32_t FindLeastCommonComponent(const std::vector<uint32_t>& componentTypes, const std::vector<uint32_t>& componentFlags);
+
+		template <class HEAD>
+		void AddToVector( std::vector< BaseComponent* >* pComponents, std::vector< uint32_t >* pComponentIDs, HEAD head);
+		template <class HEAD, class... TAIL>
+		void AddToVector( std::vector< BaseComponent* >* pComponents, std::vector< uint32_t >* pComponentIDs, HEAD head, TAIL... tail);
 	};
+
+	template <class... Component>
+	EntityHandle EcsManager::CreateEntityByComponents(Component... componentArgs)
+	{
+		std::vector< BaseComponent* > components;
+		std::vector< uint32_t > componentIDs;
+		AddToVector( &components, &componentIDs, componentArgs... );
+
+		return CreateEntity( &components[0], &componentIDs[0], components.size() );
+	}
 
 	//Component methods
 	template< class ComponentType >
@@ -70,7 +87,30 @@ namespace ecs {
 
 	template< class ComponentType >
 	ComponentType* EcsManager::GetCompontent( EntityHandle entity ){
-		GetComponentInternal( EntityHandleToComponents( entity ), mComponents[ComponentType::sID], ComponentType::sID );
+		return (ComponentType*)GetComponentInternal( EntityHandleToComponents( entity ), mComponents[ComponentType::sID], ComponentType::sID );
+	}
+
+	template <class HEAD>
+	void EcsManager::AddToVector(
+			std::vector< BaseComponent* >* pComponents,
+			std::vector< uint32_t >* pComponentIDs,
+			HEAD head)
+	{
+		pComponents->push_back(&head);
+		pComponentIDs->push_back( HEAD::sID );
+	}
+
+	template <class HEAD, class... TAIL>
+	void EcsManager::AddToVector(
+			std::vector< BaseComponent* >* pComponents,
+			std::vector< uint32_t >* pComponentIDs,
+			HEAD head,
+			TAIL... tail)
+	{
+		pComponents->push_back(&head);
+		pComponentIDs->push_back( HEAD::sID );
+
+		AddToVector(pComponents, pComponentIDs, tail...);
 	}
 
 }

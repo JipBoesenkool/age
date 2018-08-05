@@ -58,6 +58,24 @@ void GLShader::Unbind() const
 }
 
 //Uniform functions
+int GLShader::GetUniformLocation( const std::string &uniformName )
+{
+	//Check cache
+	if( mUniformCache.find(uniformName) != mUniformCache.end() )
+	{
+		return mUniformCache[uniformName];
+	}
+
+	GLCall( int location = glGetUniformLocation(mRendererId, uniformName.c_str() ) );
+	if( location == -1 )
+	{
+		std::cout << "Warning: uniform " << uniformName << " doesn't exist \n";
+		return location;
+	}
+	mUniformCache[uniformName] = location;
+
+	return location;
+}
 void GLShader::SetUniformBool(const std::string &name, bool value)
 {
 	GLCall( glUniform1i( GetUniformLocation(name), (int)value ) );
@@ -90,23 +108,6 @@ void GLShader::SetUniformVec4(const std::string &name, float x, float y, float z
 //void GLShader::SetUniformMat4(const std::string &name, const glm::mat4 &mat);
 
 //Private:
-int GLShader::GetUniformLocation( const std::string &uniformName )
-{
-	//Check cache
-	if( mUniformCache.find(uniformName) != mUniformCache.end() )
-	{
-		return mUniformCache[uniformName];
-	}
-
-	GLCall( int location = glGetUniformLocation(mRendererId, uniformName.c_str() ) );
-	if( location == -1 )
-	{
-		std::cout << "Warning: uniform " << uniformName << " doesn't exist \n";
-	}
-	mUniformCache[uniformName] = location;
-
-	return location;
-}
 
 unsigned int GLShader::CreateShader( const std::string &vertexShader, const std::string &fragmentShader, const std::string &geometryShader )
 {

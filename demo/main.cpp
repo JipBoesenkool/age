@@ -1,17 +1,30 @@
 #include <age.h>
-#include "ecs/ecsTest.cpp"
-#include "reflection/reflectionTest.cpp"
-#include "ogl_renderer/oglRendererTest.cpp"
+#include "ecs/ecsTest.h"
+#include "reflection/reflectionTest.h"
+#include "ogl_renderer/oglRendererTest.h"
+
+#include "app/Application.h"
 #include <iostream>
+
+void RunTests()
+{
+	ComponentTest();
+	ReflectionTest();
+
+	oglRendererTest oglRenderTest;
+	oglRenderTest.OGLTest();
+}
 
 int main() {
 	std::cout << "Age demo started." << "\n";
 	Log("Debug mode.")
 
-	ComponentTest();
-	//ReflectionTest();
+	//RunTests();
 
-	OGLTest();
+	//Run test app
+	Application app;
+	app.Init();
+	app.Run();
 
 	return 0;
 }

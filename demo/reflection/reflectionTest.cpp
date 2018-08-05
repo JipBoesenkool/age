@@ -1,10 +1,19 @@
 //
 // Created by Jip Boesenkool on 10/06/2018.
 //
-#include <reflection/Reflection.h>
+#include "reflectionTest.h"
 
 void ReflectionTest()
 {
+	TypeDatabase::Get().PrintAll();
+
+	std::cout << "\nGetTypeByType(int) " << "\n";
+	std::cout << GetTypeByType(int).mName << "\n";
+
+	//std::cout << "\nGetTypeByString('int') " << "\n";
+	//TODO: why doesn't this work!!!
+	//std::cout << TypeDatabase::Get().GetType("int").mName << "\n";
+
 	//Variable
 	Var v;
 	v = std::string( "test" );
@@ -46,6 +55,5 @@ void ReflectionTest()
 		const TypeDesc* td = pair.second.GetType();
 		std::cout << "Type: " << td->mName << "\n";
 	}
-
 }
 
