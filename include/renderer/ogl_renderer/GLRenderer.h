@@ -19,6 +19,7 @@
 #include "GLShader.h"
 #include "GLMesh.h"
 #include "GLUniform.h"
+#include "GLUniformBuffer.h"
 
 #include <unordered_map>
 
@@ -35,9 +36,11 @@ private:
 //Getters
 public:
 	MeshHandle GetMeshHandle( std::string name ){ return mMeshMap[name]; }
+	std::vector<GLMesh>& GetMeshes( ){ return mMeshes; }
 	ShaderHandle GetShaderHandle( std::string name ){ return mShaderMap[name]; }
 	Shader& GetShader( ShaderHandle shaderId ){ return mShaders[ shaderId ]; }
 	Shader& GetShader( std::string name ){ return mShaders[ mShaderMap[name] ]; }
+	std::vector<GLShader>& GetShaders( ){ return mShaders; }
 //Functions
 public:
 	GLRenderer();
@@ -47,9 +50,11 @@ public:
 	MeshHandle CreateMesh(const std::string& name, VertexBufferLayout& layout, const VertexBufferObject& vbo, const IndexBufferObject& ibo);
 
 	void Clear();
-	void Render( ShaderHandle shader, MeshHandle mesh, UniformList* uniformList );
-private:
+	void Render( ShaderHandle shaderHandle, MeshHandle meshHandle, UniformList* uniformList );
+	void Render( ShaderHandle shaderHandle, MeshHandle meshHandle, glm::vec3& position );
+	void Render( ShaderHandle shaderHandle, MeshHandle meshHandle, glm::mat4& modelMatrix );
 	void SetUniforms( UniformList* uniformList, Shader& shader);
+private:
 	void PrintVersions();
 };
 

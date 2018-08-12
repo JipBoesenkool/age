@@ -2,6 +2,7 @@
 add_subdirectory(os)
 add_subdirectory(core)
 add_subdirectory(glfw)
+add_subdirectory(renderer/renderer)
 
 add_subdirectory(memory)
 add_subdirectory(reflection)

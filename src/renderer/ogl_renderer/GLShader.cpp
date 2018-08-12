@@ -98,14 +98,25 @@ void GLShader::SetUniformVec3(const std::string &name, float x, float y, float z
 {
 	GLCall( glUniform3f( GetUniformLocation(name), x, y, z ) );
 }
-//void GLShader::SetUniformVec4(const std::string &name, const glm::vec4 &value);
+void GLShader::SetUniformVec3(const std::string &name, const glm::vec3 &value)
+{
+	GLCall( glUniform3fv( GetUniformLocation(name), 1, &value[0] ) );
+}
 void GLShader::SetUniformVec4(const std::string &name, float x, float y, float z, float w)
 {
 	GLCall( glUniform4f( GetUniformLocation(name), x, y, z, w ) );
 }
+void GLShader::SetUniformVec4(const std::string &name, const glm::vec4 &value)
+{
+	GLCall( glUniform4fv( GetUniformLocation(name), 1, &value[0] ) );
+}
 //void GLShader::SetUniformMat2(const std::string &name, const glm::mat2 &mat);
 //void GLShader::SetUniformMat3(const std::string &name, const glm::mat3 &mat);
 //void GLShader::SetUniformMat4(const std::string &name, const glm::mat4 &mat);
+void GLShader::SetUniformMat4(const std::string &name, const glm::mat4 &mat)
+{
+	GLCall( glUniformMatrix4fv( GetUniformLocation(name), 1, GL_FALSE, &mat[0][0]) );
+}
 
 //Private:
 

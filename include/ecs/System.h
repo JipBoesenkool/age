@@ -1,12 +1,13 @@
 #pragma once
 
 #include <vector>
+#include <assert.h>
 
 #include "Component.h"
 
 namespace ecs
 {
-	class BaseSystem
+	class System
 	{
 	public:
 		enum
@@ -14,14 +15,15 @@ namespace ecs
 			FLAG_OPTIONAL = 1,
 		};
 
-		BaseSystem()
+		System()
 		{
 			//Empty constructor
 		}
 
 		virtual void UpdateComponents(float delta, BaseComponent** components)
 		{
-			//Empty fn?
+			// to be overriden
+			assert(false);
 		}
 
 		const std::vector<uint32_t>& GetComponentTypes()
@@ -36,7 +38,7 @@ namespace ecs
 		bool IsValid();
 
 	protected:
-		void addComponentType(uint32_t componentType, uint32_t componentFlag = 0)
+		void AddComponentType(uint32_t componentType, uint32_t componentFlag = 0)
 		{
 			mComponentTypes.push_back(componentType);
 			mComponentFlags.push_back(componentFlag);

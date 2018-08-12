@@ -11,6 +11,8 @@
 
 #include <renderer/ogl_renderer/GLShader.h>
 #include <renderer/ogl_renderer/GLMesh.h>
+#include <glm/detail/type_mat.hpp>
+#include <glm/matrix.hpp>
 
 GLRenderer::GLRenderer()
 {
@@ -79,7 +81,7 @@ MeshHandle GLRenderer::CreateMesh(const std::string& name, VertexBufferLayout& l
 	mMeshMap.insert(
 			std::pair<std::string, unsigned int>( name, index )
 	);
-	MeshResource mRes{name, layout, vbo, ibo};
+	Mesh mRes{name, layout, vbo, ibo};
 	mMeshes.emplace_back( name, layout, vbo, ibo );
 
 	//Return handle
@@ -106,7 +108,34 @@ void GLRenderer::Render( ShaderHandle shaderHandle, MeshHandle meshHandle, Unifo
 	mesh.Render();
 }
 
-//private
+void GLRenderer::Render( ShaderHandle shaderHandle, MeshHandle meshHandle, glm::vec3& position )
+{
+	GLMesh& mesh = mMeshes[ meshHandle ];
+
+	GLShader& shader = mShaders[ shaderHandle ];
+	shader.Bind();
+
+	//TODO: find better way for this
+	//Set transform
+	shader.SetUniformVec3("uPosition", position);
+
+	mesh.Render();
+}
+
+void GLRenderer::Render( ShaderHandle shaderHandle, MeshHandle meshHandle, glm::mat4& modelMatrix )
+{
+	GLMesh& mesh = mMeshes[ meshHandle ];
+
+	GLShader& shader = mShaders[ shaderHandle ];
+	shader.Bind();
+
+	//TODO: find better way for this
+	//Set transform
+	shader.SetUniformMat4("uModelMatrix", modelMatrix);
+
+	mesh.Render();
+}
+
 void GLRenderer::SetUniforms( UniformList* uniformList, Shader& shader )
 {
 	std::vector<Uniform>& uniforms = uniformList->GetUniforms();
@@ -117,6 +146,7 @@ void GLRenderer::SetUniforms( UniformList* uniformList, Shader& shader )
 	}
 }
 
+//private
 void GLRenderer::PrintVersions()
 {
 	// Get info of GPU and supported OpenGL version

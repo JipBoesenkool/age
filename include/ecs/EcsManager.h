@@ -32,10 +32,34 @@ namespace ecs {
 		template <class... Component>
 		EntityHandle CreateEntityByComponents(Component... componentArgs);
 
+		template<class A, class B>
+		EntityHandle CreateEntity(A& c1, B& c2)
+		{
+			BaseComponent* components[] = { &c1, &c2 };
+			uint32_t componentIds[] = {A::sID, B::sID};
+			return CreateEntity(components, componentIds, 2);
+		};
+
+		template<class A, class B, class C>
+		EntityHandle CreateEntity(A& c1, B& c2, C& c3)
+		{
+			BaseComponent* components[] = { &c1, &c2, &c3 };
+			uint32_t componentIds[] = {A::sID, B::sID, C::sID};
+			return CreateEntity(components, componentIds, 3);
+		};
+
+		template<class A, class B, class C, class D>
+		EntityHandle CreateEntity(A& c1, B& c2, C& c3, D& c4)
+		{
+			BaseComponent* components[] = { &c1, &c2, &c3, &c4 };
+			uint32_t componentIds[] = {A::sID, B::sID, C::sID, D::sID};
+			return CreateEntity(components, componentIds, 4);
+		};
+
 		//Component methods
 		template< class ComponentType > void AddComponent( EntityHandle entity, ComponentType *pComponent );
 		template< class ComponentType > void RemoveComponent( EntityHandle entity );
-		template< class ComponentType > ComponentType* GetCompontent( EntityHandle entity );
+		template< class ComponentType > ComponentType* GetComponent( EntityHandle entity );
 
 		//System methods
 		void UpdateSystems( ecs::SystemList& systems, float delta );
@@ -43,8 +67,7 @@ namespace ecs {
 	private:
 		void UpdateSystemWithMultipleComponents(
 			uint32_t index, ecs::SystemList& systems,
-			float delta, const std::vector<uint32_t>& componentTypes,
-			std::vector<BaseComponent*>& componentParam, std::vector<std::vector<uint8_t>*>& componentVectors);
+			float delta, const std::vector<uint32_t>& componentTypes);
 
 		//Internal functions
 		BaseComponent* GetComponentInternal(std::vector<CompontentPair>& components, std::vector<uint8_t>& array, uint32_t componentId);
@@ -86,7 +109,7 @@ namespace ecs {
 	}
 
 	template< class ComponentType >
-	ComponentType* EcsManager::GetCompontent( EntityHandle entity ){
+	ComponentType* EcsManager::GetComponent( EntityHandle entity ){
 		return (ComponentType*)GetComponentInternal( EntityHandleToComponents( entity ), mComponents[ComponentType::sID], ComponentType::sID );
 	}
 

@@ -7,9 +7,8 @@
 
 class RenderResource
 {
-protected:
-	unsigned int mRendererId;
 public:
+	unsigned int mRendererId;
 	//RenderResource(RenderResource const&) = delete;
 	//RenderResource& operator=(RenderResource const&) = delete;
 	RenderResource() {}

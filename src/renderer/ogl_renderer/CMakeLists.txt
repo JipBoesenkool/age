@@ -33,7 +33,8 @@ set(RENDERER_SOURCE_FILES
         buffer/GLVertexArray.cpp
         GLShader.cpp
         GLMesh.cpp
-        GLUniform.cpp)
+        GLUniform.cpp
+        GLUniformBuffer.cpp)
 add_library(${NAME} SHARED ${RENDERER_SOURCE_FILES})
 target_link_libraries(${NAME} age )
 target_link_libraries(${NAME} ${GLAD} )

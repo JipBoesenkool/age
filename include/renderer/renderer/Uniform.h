@@ -5,7 +5,6 @@
 #ifndef AGE_UNIFORM_H
 #define AGE_UNIFORM_H
 
-#include <reflection/Reflection.h>
 #include <renderer/renderer/Shader.h>
 
 typedef void (*UniformSetFn)(Shader& shader, const std::string &name, void* value);
@@ -13,6 +12,7 @@ typedef void (*UniformSetFn)(Shader& shader, const std::string &name, void* valu
 struct Uniform
 {
 	std::string  mName;
+	std::string  mTypeName;
 	void* 		 mpData;
 	UniformSetFn mpSetFn;
 };

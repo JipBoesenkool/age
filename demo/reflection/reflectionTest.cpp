@@ -20,7 +20,7 @@ void ReflectionTest()
 	//Simple cast
 	//TODO: Create automatic with template metaprogramming
 	std::string str;
-	if( strcmp(v.GetType()->mName, "std::string") == 0 )
+	if( v.GetType()->mName.compare("std::string") == 0 )
 	{
 		str = v.GetValue<std::string>();
 		std::cout << "Type: " << v.GetType()->mName << "\n"
@@ -31,7 +31,7 @@ void ReflectionTest()
 	//Typededuction test
 	int i;
 	int j;
-	if( v.GetType()->mName == GetTypeByType(int).mName )
+	if( v.GetType()->mName.compare(GetTypeByType(int).mName) )
 	{
 		i = v.GetValue<int>(  );
 		std::cout << "Type: " << v.GetType()->mName << "\n"

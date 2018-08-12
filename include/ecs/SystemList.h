@@ -10,20 +10,19 @@ namespace ecs
 	class SystemList
 	{
 	public:
-		bool AddSystem( BaseSystem &system );
-		void RemoveSystem( BaseSystem &system );
+		bool AddSystem( System &system );
+		void RemoveSystem( System &system );
 
-		bool IsValid();
 		inline size_t Size()
 		{
 			return mSystems.size();
 		}
-		inline ecs::BaseSystem* operator[](uint32_t index)
+		inline ecs::System* operator[](uint32_t index)
 		{
 			return mSystems[index];
 		}
 	private:
-		std::vector< BaseSystem* > mSystems;
+		std::vector< System* > mSystems;
 	};
 }
 

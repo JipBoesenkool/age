@@ -5,7 +5,7 @@
 #include "../../include/reflection/TypeDesc.h"
 #include "TypeDatabase.h"
 
-TypeDesc* TypeDesc::GetType( const char* name )
+TypeDesc* TypeDesc::GetType( std::string name )
 {
 	return TypeDatabase::Get().GetTypePtr( name );
 }

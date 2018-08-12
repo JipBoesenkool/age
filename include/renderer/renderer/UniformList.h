@@ -5,6 +5,8 @@
 #define AGE_UNIFORMLIST_H
 
 #include <vector>
+#include <string>
+#include <reflection/Reflection.h>
 
 #include "Uniform.h"
 
@@ -34,7 +36,14 @@ public:
 	void Push(std::string name, T* pData )
 	{
 		//Get function pointer
-		const char* typeName = GetTypeByType(T).mName;
+		TypeDesc& typeDesc = TypeDatabase::Get().GetType<T>();
+		std::string typeName = typeDesc.mName;
+		Push(name, pData, typeName);
+	};
+	template <typename T>
+	void Push(std::string name, T* pData, std::string typeName )
+	{
+		//Get function pointer
 		UniformSetFn setFn 	= spUniformImpl->GetCallback( typeName );
 
 		//Convert data to void pointer
@@ -42,11 +51,11 @@ public:
 		typeNameCopy.pop_back();
 
 		void* pVoidData 	= nullptr;
-		if( typeNameCopy.compare("glm::vec") )
+		if( typeNameCopy.compare("glm::vec") == 0 )
 		{
 			pVoidData = (void*)&pData[0];
 		}
-		else if( typeNameCopy.compare("glm::mat") )
+		else if( typeNameCopy.compare("glm::mat") == 0 )
 		{
 			pVoidData = (void*)&pData[0][0];
 		}
@@ -56,7 +65,7 @@ public:
 		}
 
 		//Add to vector
-		mUniforms.push_back( Uniform{name, pVoidData, setFn} );
+		mUniforms.push_back( Uniform{name, typeName, pVoidData, setFn} );
 	};
 	//Getters
 	inline std::vector<Uniform>& GetUniforms() { return mUniforms; };

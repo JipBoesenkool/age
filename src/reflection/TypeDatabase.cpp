@@ -16,12 +16,6 @@ DefineTypeInternal( double );
 DefineTypeInternal( VarBag );
 
 //GLM
-#include <glm/vec2.hpp>
-#include <glm/vec3.hpp>
-#include <glm/vec4.hpp>
-#include <glm/mat2x2.hpp>
-#include <glm/mat3x3.hpp>
-#include <glm/mat4x4.hpp>
 DefineTypeInternal( glm::vec2 );
 DefineTypeInternal( glm::vec3 );
 DefineTypeInternal( glm::vec4 );
@@ -71,6 +65,22 @@ void TypeDatabase::PrintAll()
 					  << "\t\tName: " << md.mpTypeDesc->mName << "\n"
 					  << "\t\tsize: " << md.mpTypeDesc->mSize << "\n";
 		}
+	}
+}
+
+//Private:
+void TypeDatabase::Print(TypeDesc& typeDesc)
+{
+	std::cout << "\nName: " << typeDesc.mName << "\n"
+			  << "size: " << typeDesc.mSize << "\n"
+			  << "Members: \n";
+
+	for( int i = 0; i < typeDesc.mMembers.size(); ++i ) {
+		const MemberDesc md = typeDesc.mMembers[i];
+		std::cout << "\tName: " << md.mName << "\n"
+				  << "\toffset: " << md.mOffset << "\n"
+				  << "\t\tName: " << md.mpTypeDesc->mName << "\n"
+				  << "\t\tsize: " << md.mpTypeDesc->mSize << "\n";
 	}
 }
 

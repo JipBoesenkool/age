@@ -6,6 +6,7 @@
 #define REFLECTION_MEMBERDESC_H
 
 #include "../../include/reflection/TypeDesc.h"
+#include <string>
 
 template<typename T, typename M>
 constexpr int OffsetOf(M T::*member)
@@ -17,13 +18,13 @@ constexpr int OffsetOf(M T::*member)
 class MemberDesc
 {
 public:
-	const char* 	mName;
+	std::string 	mName;
 	unsigned int 	mOffset;
-	const char* 	mTypeName;
+	std::string 	mTypeName;
 	TypeDesc* 		mpTypeDesc = nullptr;
 
 	template<typename Class, typename Member>
-	static MemberDesc Create(const char* name, Member Class::*memberPtr)
+	static MemberDesc Create(std::string name, Member Class::*memberPtr)
 	{
 		MemberDesc md;
 		md.mName = name;

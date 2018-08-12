@@ -27,13 +27,13 @@ public:
 	void SetUniformFloat(const std::string &name, float value) override;
 	//void SetUniformVec2(const std::string &name, const glm::vec2 &value) override;
 	void SetUniformVec2(const std::string &name, float x, float y) override;
-	//void SetUniformVec3(const std::string &name, const glm::vec3 &value) override;
 	void SetUniformVec3(const std::string &name, float x, float y, float z) override;
-	//void SetUniformVec4(const std::string &name, const glm::vec4 &value) override;
+	void SetUniformVec3(const std::string &name, const glm::vec3 &value) override;
 	void SetUniformVec4(const std::string &name, float x, float y, float z, float w) override;
+	void SetUniformVec4(const std::string &name, const glm::vec4 &value) override;
 	//void SetUniformMat2(const std::string &name, const glm::mat2 &mat) override;
 	//void SetUniformMat3(const std::string &name, const glm::mat3 &mat) override;
-	//void SetUniformMat4(const std::string &name, const glm::mat4 &mat) override;
+	void SetUniformMat4(const std::string &name, const glm::mat4 &mat) override;
 private:
 	static unsigned int CreateShader( const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath = nullptr );
 	static unsigned int CompileShader( unsigned int type, const std::string& source);

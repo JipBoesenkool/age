@@ -128,6 +128,8 @@ void GLFWindow::CreateWindow( int width, int height, char* title )
 	glfwMakeContextCurrent(GLFWindow::mpWindow);
 	// Get the width and height of the framebuffer to properly resize the window
 	glfwGetFramebufferSize(GLFWindow::mpWindow, &mWidth, &mHeight);
+	//NOTE: vSync
+	glfwSwapInterval(60);
 
 	// Call the resize callback to make sure things get drawn immediately
 	Resize(mWidth, mHeight);

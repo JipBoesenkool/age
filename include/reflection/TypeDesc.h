@@ -6,10 +6,11 @@
 #define REFLECTION_TYPEDESC_H
 
 #include <vector>
+#include <string>
 
 template <typename TYPE>
 struct GetTypeName {
-	static const char* value;
+	static std::string value;
 };
 
 class MemberDesc;
@@ -17,7 +18,7 @@ class TypeDesc
 {
 public:
 	// Scoped C++ name of the type
-	const char* mName;
+	std::string mName;
 
 	// Result of sizeof(type) operation
 	size_t mSize;
@@ -28,10 +29,10 @@ public:
 	TypeDesc* mParent = nullptr;
 
 	template<typename T>
-	static TypeDesc Create(const char* const name)
+	static TypeDesc Create(std::string name)
 	{
 		TypeDesc td;
-		td.mName = name;
+		td.mName = std::string(name);
 		td.mSize = sizeof(T);
 		return td;
 	}
@@ -51,7 +52,7 @@ public:
 	void Copy( void *dest, const void *src ) const;
 	void* NewCopy( const void *src ) const;
 
-	TypeDesc* GetType( const char* name );
+	TypeDesc* GetType( std::string name );
 };
 
 //#include "../../src/reflection/TypeDesc.inl"

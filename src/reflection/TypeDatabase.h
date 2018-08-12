@@ -11,6 +11,12 @@
 #include <iostream>
 #include <map>
 #include <cassert>
+#include <string>
+
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
+#include <glm/Matrix.hpp>
 
 //Avoid linkage to Reflection.h
 #define DefineTypeInternal(type) \
@@ -20,8 +26,12 @@
 // A big registry of all types in the game with methods to manipulate them
 class TypeDatabase
 {
+//Members
 public:
-	typedef std::map<const char*, TypeDesc> TypeMap;
+	typedef std::map<std::string, TypeDesc> TypeMap;
+	TypeMap mTypes;
+public:
+
 
 	TypeDatabase();
 
@@ -29,9 +39,9 @@ public:
 	TypeDesc& CreateType( )
 	{
 		//Already created
-		const char* name = GetTypeName<T>::value;
-		TypeMap::iterator itr = mTypes.find( name );
-		if(itr != std::end(mTypes)) {
+		std::string name( GetTypeName<T>::value );
+		auto itr = mTypes.find( name );
+		if( itr != mTypes.end() ) {
 			return itr->second;
 		}
 
@@ -43,11 +53,11 @@ public:
 	}
 
 	template<typename T>
-	TypeDatabase& CreateType( const char* name )
+	TypeDatabase& CreateType( const std::string& name )
 	{
 		//Already created
 		TypeMap::iterator itr = mTypes.find( name );
-		if(itr != std::end(mTypes)) {
+		if( itr != mTypes.end() ) {
 			return *this;
 		}
 
@@ -64,12 +74,14 @@ public:
 		return GetType( GetTypeName<T>::value );
 	}
 
-	TypeDesc& GetType( const char* name) {
+	TypeDesc& GetType( const std::string& name ) {
 		//Not created
-		if( mTypes.find(name) == mTypes.end() ) {
+		if( mTypes.find( name ) == mTypes.end() ) {
+			std::cout << "Error::GetType: " << name << " not found.\n";
 			assert(false);
 		}
 
+		//Print( mTypes[name] );
 		return mTypes[name];
 	}
 
@@ -78,7 +90,7 @@ public:
 		return GetTypePtr( GetTypeName<T>::value );
 	}
 
-	TypeDesc* GetTypePtr( const char* name ) {
+	TypeDesc* GetTypePtr( std::string name ) {
 		//Not created
 		if( mTypes.find(name) == mTypes.end() ) {
 			assert(false);
@@ -89,7 +101,7 @@ public:
 
 	// Registers a new data member to the struct.
 	template<typename Struct, typename Member>
-	TypeDatabase& AddMember(const char* const name, Member Struct::*memberPtr)
+	TypeDatabase& AddMember(std::string name, Member Struct::*memberPtr)
 	{
 		TypeDesc& td = GetType<Struct>();
 		MemberDesc md = MemberDesc::Create(name, memberPtr);
@@ -100,7 +112,7 @@ public:
 	static TypeDatabase& Get();
 	void PrintAll();
 private:
-	TypeMap mTypes;
+	void Print(TypeDesc& typeDesc);
 };
 
 #endif //REFLECTION_TYPEDATABASE_H

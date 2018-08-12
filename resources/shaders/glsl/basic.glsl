@@ -1,11 +1,18 @@
 #shader vertex
 #version 330 core
+layout (std140) uniform Matrices
+{
+    mat4 uProjection;
+    mat4 uView;
+};
+
 layout(location = 0) in vec3 position;
 
 uniform vec3 uPosition;
+uniform mat4 uModelMatrix;
 void main()
 {
-    gl_Position = vec4(uPosition * position, 1.0f);
+    gl_Position = uProjection * uView * uModelMatrix * vec4(position, 1.0);
 }
 
 #shader fragment

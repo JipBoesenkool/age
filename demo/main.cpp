@@ -1,6 +1,6 @@
 #include <age.h>
 #include "ecs/ecsTest.h"
-#include "reflection/reflectionTest.h"
+//#include "reflection/reflectionTest.h"
 #include "ogl_renderer/oglRendererTest.h"
 
 #include "app/Application.h"
@@ -9,7 +9,7 @@
 void RunTests()
 {
 	ComponentTest();
-	ReflectionTest();
+	//ReflectionTest();
 
 	oglRendererTest oglRenderTest;
 	oglRenderTest.OGLTest();

@@ -78,16 +78,13 @@ void GLUniform::SetUniformVec4(Shader& shader, const std::string &name, void* va
 }
 void GLUniform::SetUniformMat2(Shader& shader, const std::string &name, void* value)
 {
-
 	GLCall( glUniformMatrix2fv( shader.GetUniformLocation(name), 1, GL_FALSE, (float*)value ) );
 }
 void GLUniform::SetUniformMat3(Shader& shader, const std::string &name, void* value)
 {
-
 	GLCall( glUniformMatrix3fv( shader.GetUniformLocation(name), 1, GL_FALSE, (float*)value ) );
 }
 void GLUniform::SetUniformMat4(Shader& shader, const std::string &name, void* value)
 {
-
 	GLCall( glUniformMatrix4fv( shader.GetUniformLocation(name), 1, GL_FALSE, (float*)value ) );
 }

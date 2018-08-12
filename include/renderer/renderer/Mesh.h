@@ -11,7 +11,7 @@
 
 typedef unsigned int MeshHandle;
 
-struct MeshResource
+struct Mesh
 {
 	std::string mName;
 	VertexBufferLayout& mLayout;
